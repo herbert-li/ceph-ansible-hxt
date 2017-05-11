@@ -1,0 +1,194 @@
+# Gather facts from all nodes
+#
+- hosts: all
+  tasks:
+    - name: setup
+      setup:
+
+# Make sure monitoring agent and time agent are in all servers
+#
+- name: Configure ntp
+  hosts: all
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: ntp, tags: [ntp]}
+
+# Data Node Deployment
+#
+- name: Deploy MySQL servers
+  hosts: mysql_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: mysql, tags: [mysql]}
+
+- name: Deploy Rabbitmq servers
+  hosts: rabbit_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: rabbitmq, tags: [rabbitmq]}
+
+- name: Configure memcache
+  hosts: memcache_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: memcached, tags: [memcached]}
+
+# Adding Ceph Monitors
+#
+- name: Deploy Ceph monitors
+  hosts: ceph_monitor_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: ceph, osd: False, mon: True, tags: [ceph-mon]}
+
+# Quorum is required to start defining users and pools (configure ceph).
+# The configuration should be done after the Ceph Monitors have been
+# deployed and the cluster is up
+- name: Configure Ceph cluster
+  hosts: ceph_monitor_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: ceph-bootstrap, tags: [ceph-mon]}
+
+# Controller Deployment
+#
+- name: Configure OpenStack client app
+  hosts: cli_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: cli, tags: [cli]}
+
+- name: Configure Keystone
+  hosts: keystone_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: keystone, tags: [keystone]}
+
+
+- name: Configure Glance
+  hosts: glance_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: glance, tags: [glance]}
+
+- name: Configure Nova API
+  hosts: nova_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: nova, tags: [nova]}
+
+- name: Configure Neutron API
+  hosts: neutron_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: neutron, tags: [neutron]}
+
+- name: Configure Cinder API
+  hosts: cinder_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: cinder, tags: [cinder]}
+
+- name: Configure  Horizon
+  hosts: horizon_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: horizon, tags: [horizon]}
+
+- name: Configure Heat API
+  hosts: heat_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: heat, tags: [heat]}
+
+# Networking node Deployment
+#
+- name: Configure Nics and Neutron
+  hosts: networking_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: nics, tags: [nics]}
+    - {role: network, tags: [network]}
+
+# Compute Nodes Deployment
+#
+- name: Configure Ceph OSDs
+  hosts: ceph_osd_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: ceph, osd: True, mon: False, tags: [ceph-osd]}
+
+- name: Configure Compute
+  hosts: compute_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: nics, tags: [nics]}
+    - {role: compute, tags: [compute]}
+
+- name: Configure Cinder Volumes
+  hosts: compute_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+    - ["secrets/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: cinder-volume, tags: [cinder-volume]}
+
+- name: Deploy web frontends
+  hosts: web_frontend_servers
+  become: yes
+  vars_files:
+    - ["secrets/deployment-vars", "deployment-vars.example"]
+  roles:
+    - {role: web-frontend, tags: [web-frontend]}

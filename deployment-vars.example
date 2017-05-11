@@ -1,0 +1,110 @@
+mysql_host: r2-a4
+rabbit_host: r2-a4
+controller_host: r2-a5
+network_host: r2-a3
+
+# Ceph needs a unique value from "uuidgen"
+ceph_fsid: "e05d6376-6965-4c48-9b36-b8f5c518e3b9"
+
+# Generated with: ceph-authtool -g --gen-print-key
+ceph_mon_pass: "AQD+HM9XTYv+CRAAK8PqN/vLYxetv18R0gnSAw=="
+ceph_admin_pass: "AQA1Hc9XXWHTNBAAckb3I3kYvZ97GSwl0jkyLA=="
+ceph_bootstrap_osd_pass: "AQC6h89XrotVBRAA2huhk0VW7c6VIWQyETl+gA=="
+ceph_glance_pass: "AQBrHc9XZNzwMBAAwhPr4Gbcn77E/6AezPMhqg=="
+ceph_nova_pass: "AQCLHc9XBR00ERAA3ZOXE/6Lugiub+IcX0VUmA=="
+ceph_cinder_pass: "AQCBHc9X7x2NLBAA2nKjpTpUaH5eHv6+FqvZog=="
+
+serial_console_public_url: "ws://www.example.cloud:6083"
+public_api_host: "https://www.example.cloud"
+
+mysql_root_user: mysql
+mysql_root_pass: UnsafeMySQLPassw0rd
+# Note: "mysql_max_open_files" should be greater than
+# "mysql_max_connections"
+mysql_max_open_files: 2048
+mysql_max_connections: 1500
+
+keystone_admin_pass: Not5afe4Pr0duct!on
+keystone_db_user: keystone
+keystone_db_pass: UnsafeIdentityPassw0rd
+
+glance_user: glance
+glance_pass: Unsafe1magePassw0rd
+glance_db_user: glance
+glance_db_pass: UnsafePassword
+
+nova_neutron_metadata_proxy_shared_secret: f530a126c0be630488a6
+
+nova_user: nova
+nova_pass: UnsafeC0mput3Passw0rd
+nova_db_user: nova
+nova_db_pass: UnsafeC0mput3Passw0rd
+nova_api_db_user: nova-api
+nova_api_db_pass: UnsafeC0mput3Passw0rd
+nova_ceph_virsh_uuid: 06214a0d-dc30-4e9b-856b-c8f0c0e63d9d
+
+rabbit_user: openstack
+rabbit_pass: UnsafeBunnyPassw0rd
+rabbit_db_user: rabbit
+rabbit_db_pass: UnsafeBunnyPassw0rd
+
+neutron_user: neutron
+neutron_pass: UnsafeN3tPassw0rd
+neutron_db_user: neutron
+neutron_db_pass: UnsafePassword
+
+cinder_user: cinder
+cinder_pass: UnsafeBl0ckPassw0rd
+cinder_db_user: cinder
+cinder_db_pass: UnsafePassword
+cinder_ceph_virsh_uuid: 21cf1630-801b-4dd6-aef5-2bed37fd086a
+
+heat_user: heat
+heat_pass: UnsafeHeatPassw0rd
+heat_db_user: heat
+heat_db_pass: UnsafePassword
+
+heat_domain_admin: heat_domain_admin
+heat_domain_pass: UnsafeD0main
+
+zabbix_db_name: zabbix
+zabbix_db_user: zabbix
+zabbix_db_password: Unsaf3Zabb1xPassw0rd
+zabbix_server: monitoring.example.com
+
+# These are only required if deploying the web-frontend role.
+# One easy way to manage SSL certs is by using the free LetsEncrypt service:
+#   https://letsencrypt.org
+# Alternatively, you can use the "snakeoil" certificates from the
+# "ssl-cert" package.
+ssl_cert: /etc/letsencrypt/live/{{inventory_hostname}}/cert.pem
+ssl_key: /etc/letsencrypt/live/{{inventory_hostname}}/privkey.pem
+ssl_ca_cert: /etc/letsencrypt/live/{{inventory_hostname}}/chain.pem
+
+# If deploying with LDAP
+# these variables will need to be filled and ldap_multidomain_support
+# will need to be set to True
+
+ldap_multidomain_support: False
+ldap_domain: linaro
+ldap_url: ldaps://example.com
+ldap_user: cn=openstack,ou=linaro,dc=example,dc=com
+ldap_password: Unsaf3
+ldap_suffix: dc=example,dc=org
+
+ldap_user_tree_dn: ou=accounts,dc=example,dc=com
+ldap_user_objectclass: inetOrgPerson
+ldap_user_id_attribute: uid
+ldap_user_name_attribute: cn
+ldap_user_mail_attribute: mail
+ldap_user_pass_attribute: password
+ldap_user_enabled_attribute: enabled
+
+ldap_group_tree_dn: ou=groups,dc=example,dc=com
+ldap_group_objectclass: groupOfUniqueNames
+ldap_group_id_attribute: cn
+ldap_group_name_attribute: cn
+ldap_group_member_attribute: uniqueMember
+ldap_group_desc_attribute: description
+
+ldap_user_filter: (memberof=cn=openstack-users,ou=group,dc=example,dc=com)
