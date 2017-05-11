@@ -1,0 +1,11 @@
+- hosts: "{{ host }}"
+  gather_facts: true
+  remote_user: nli
+  tasks:
+    - shell: ip a
+      register: output
+    - debug: var=output.stdout
+#    - debug: msg=" ansible_facts={{ ansible_facts }}"
+    - debug: msg=" ansible_system={{ ansible_system }}"
+    - debug: msg={{ ansible_selinux }}
+

@@ -1,0 +1,40 @@
+# Gather facts from all nodes
+#
+- hosts: all
+  tasks:
+    - name: setup
+      setup:
+
+#
+- name: check node
+  hosts: ceph_monitor_servers
+  tasks:
+    - shell: ip a
+      register: output
+    - debug: var=output.stdout
+    - debug: msg=" ansible_system={{ ansible_system }}"
+    - debug: msg="{{ ansible_all_ipv4_addresses }}"
+    - debug: msg="{{ ansible_default_ipv4 }}"
+
+#
+- name: check node
+  hosts: vm-b
+  tasks:
+    - shell: ip a
+      register: output
+    - debug: var=output.stdout
+    - debug: msg=" ansible_system={{ ansible_system }}"
+    - debug: msg="{{ ansible_all_ipv4_addresses }}"
+    - debug: msg="{{ ansible_default_ipv4 }}"
+
+#
+- name: check node
+  hosts: vm-c
+  tasks:
+    - shell: ip a
+      register: output
+    - debug: var=output.stdout
+    - debug: msg=" ansible_system={{ ansible_system }}"
+    - debug: msg="{{ ansible_all_ipv4_addresses }}"
+    - debug: msg="{{ ansible_default_ipv4 }}"
+
