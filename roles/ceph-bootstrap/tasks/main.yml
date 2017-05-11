@@ -1,0 +1,2 @@
+- include: configure_mon.yml
+  run_once: true

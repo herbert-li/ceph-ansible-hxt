@@ -1,0 +1,9 @@
+[mon.]
+	key = {{ceph_mon_pass}}
+	caps mon = "allow *"
+
+[client.admin]
+	key = {{ceph_admin_pass}}
+	caps mon = "allow *"
+	caps osd = "allow *"
+	caps mds = "allow *"

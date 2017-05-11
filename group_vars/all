@@ -1,0 +1,6 @@
+# vi:syntax=yaml
+
+# Ceph needs an odd number of MONs. 3 is a good number for a small/mid-sized deployment
+ceph_mons: "{% for host in groups['ceph_monitor_servers'] %}{{ hostvars[host]['ansible_fqdn'] }}{% if not loop.last %}, {% endif %}{% endfor %}"
+ceph_mon_initial_members: "{% for host in groups['ceph_monitor_servers'] %}{{ hostvars[host]['ansible_hostname'] }}{% if not loop.last %}, {% endif %}{% endfor %}"
+

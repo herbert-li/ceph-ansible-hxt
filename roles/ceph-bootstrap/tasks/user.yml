@@ -1,0 +1,14 @@
+- name: Determine if {{user}} user is defined
+  command: ceph auth get client.{{user}}
+  ignore_errors: yes
+  changed_when: false
+  register: ceph_configured
+
+- name: Get requested user definition
+  command: cat /etc/ceph/ceph.client.{{user}}.keyring
+  changed_when: false
+  register: ceph_user
+
+- name: Create or update {{user}} user
+  when: (ceph_user is defined and ceph_configured.stdout != ceph_user.stdout)
+  command: "ceph auth import -i /etc/ceph/ceph.client.{{user}}.keyring"

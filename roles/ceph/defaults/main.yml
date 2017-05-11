@@ -1,0 +1,2 @@
+ceph_public_network: "{{ hostvars[inventory_hostname]['ansible_' + ceph_public_iface]['ipv4']['network'] }}"
+ceph_private_network: "{{ hostvars[inventory_hostname]['ansible_' + ceph_private_iface]['ipv4']['network'] }}"

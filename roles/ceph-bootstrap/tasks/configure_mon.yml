@@ -1,0 +1,24 @@
+- name: Find pools defined
+  command: ceph osd pool ls
+  register: ceph_pools
+  changed_when: false
+
+- name: Define Images pool for OpenStack
+  when: (ceph_pools is defined and 'images' not in ceph_pools.stdout_lines)
+  command: ceph osd pool create images 64
+
+- name: Define VMS pool for OpenStack
+  when: (ceph_pools is defined and 'vms' not in ceph_pools.stdout_lines)
+  command: ceph osd pool create vms 128
+
+- name: Define Volumes pool for OpenStack
+  when: (ceph_pools is defined and 'volumes' not in ceph_pools.stdout_lines)
+  command: ceph osd pool create volumes 64
+
+- name: Define users
+  include: user.yml user={{item}}
+  with_items:
+    - bootstrap-osd  # needed for enlisting OSDs
+    - images
+    - nova
+    - cinder

@@ -1,0 +1,11 @@
+- name: Create monitor key
+  template: src=monitor_keyring dest=/etc/ceph/ceph.mon.{{inventory_hostname}}.keyring
+
+- name: Ceph monitor mkfs with keyring
+  command: ceph-mon --cluster ceph --setuser ceph --setgroup ceph --mkfs -i {{inventory_hostname}} --fsid {{ceph_fsid}} -f -d
+  args:
+    creates: /var/lib/ceph/mon/ceph-{{inventory_hostname}}/keyring
+
+- name: Ensure the monitor is enabled and running
+  service: name=ceph-mon@{{inventory_hostname}} enabled=yes state=started
+
