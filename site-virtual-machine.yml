@@ -1,0 +1,41 @@
+# Gather facts from all nodes
+#
+- hosts: all
+  tasks:
+    - name: setup
+      setup:
+
+# Adding Ceph Monitors
+#
+- name: Deploy Ceph monitors
+  hosts: ceph_monitor_servers
+  become: yes
+  vars_files:
+    - ["virtual_machine/deployment-vars"]
+    - ["virtual_machine/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: ceph, osd: False, mon: True, tags: [ceph-mon]}
+
+# Quorum is required to start defining users and pools (configure ceph).
+# The configuration should be done after the Ceph Monitors have been
+# deployed and the cluster is up
+- name: Configure Ceph cluster
+  hosts: ceph_monitor_servers
+  become: yes
+  vars_files:
+    - ["virtual_machine/deployment-vars"]
+    - ["virtual_machine/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: ceph-bootstrap, tags: [ceph-mon]}
+
+# Storage Nodes Deployment
+#
+- name: Configure Ceph OSDs
+  hosts: ceph_osd_servers
+  become: yes
+  vars_files:
+    - ["virtual_machine/deployment-vars"]
+    - ["virtual_machine/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: ceph, osd: True, mon: False, tags: [ceph-osd]}
+

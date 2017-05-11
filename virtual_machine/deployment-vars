@@ -1,0 +1,25 @@
+# Ceph needs a unique value from "uuidgen"
+ceph_fsid: "e05d6376-6965-4c48-9b36-b8f5c518e3b9"
+
+# Generated with: ceph-authtool -g --gen-print-key
+ceph_mon_pass: "AQD+HM9XTYv+CRAAK8PqN/vLYxetv18R0gnSAw=="
+ceph_admin_pass: "AQA1Hc9XXWHTNBAAckb3I3kYvZ97GSwl0jkyLA=="
+ceph_bootstrap_osd_pass: "AQC6h89XrotVBRAA2huhk0VW7c6VIWQyETl+gA=="
+ceph_glance_pass: "AQBrHc9XZNzwMBAAwhPr4Gbcn77E/6AezPMhqg=="
+ceph_nova_pass: "AQCLHc9XBR00ERAA3ZOXE/6Lugiub+IcX0VUmA=="
+ceph_cinder_pass: "AQCBHc9X7x2NLBAA2nKjpTpUaH5eHv6+FqvZog=="
+
+# ceph config parameters
+ceph_osd_pool_default_size: "2"
+
+# explicitly define the public and private network interface
+ceph_public_iface: "eth1"
+ceph_private_iface: "eth0"
+ceph_public_netmask: "23"
+ceph_private_netmask: "24"
+
+# osd device name on each storage node
+ceph_host_osds:
+  - vdb
+  - vdc
+  - vdd

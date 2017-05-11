@@ -1,0 +1,7 @@
+[ceph_monitor_servers]
+vm-a
+
+[ceph_osd_servers]
+vm-b
+vm-c
+
