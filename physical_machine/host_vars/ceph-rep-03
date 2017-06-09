@@ -1,0 +1,6 @@
+ceph_host_osds:
+  - sda
+  - sdb
+  - sdc
+  - sdd
+  - sdh
