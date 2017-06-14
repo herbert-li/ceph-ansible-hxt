@@ -1,7 +1,9 @@
 [ceph_monitor_servers]
-ceph0
+ceph-rep-01
+ceph-rep-02
+ceph-rep-03
 
 [ceph_osd_servers]
-ceph0
-ceph1
-
+ceph-rep-01
+ceph-rep-02
+ceph-rep-03

@@ -10,16 +10,13 @@ ceph_nova_pass: "AQCLHc9XBR00ERAA3ZOXE/6Lugiub+IcX0VUmA=="
 ceph_cinder_pass: "AQCBHc9X7x2NLBAA2nKjpTpUaH5eHv6+FqvZog=="
 
 # ceph config parameters
-ceph_osd_pool_default_size: "2"
+ceph_osd_pool_default_size: "3"
 
 # explicitly define the public and private network interface
-ceph_public_iface: "eth1"
-ceph_private_iface: "eth0"
+ceph_public_iface: "eth0"
+ceph_private_iface: "enp1s0"
 ceph_public_netmask: "23"
-ceph_private_netmask: "24"
+ceph_private_netmask: "23"
 
 # osd device name on each storage node
 ceph_host_osds:
-  - sdb
-  - sdc
-  - sdd
