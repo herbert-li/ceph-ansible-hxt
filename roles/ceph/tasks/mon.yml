@@ -9,3 +9,6 @@
 - name: Ensure the monitor is enabled and running
   service: name=ceph-mon@{{inventory_hostname}} enabled=yes state=started
 
+# This fixes a bug for ceph-12.1.0 when the monitor service does not start automatically after a reboot.
+- name: Enable the ceph-mon.target service
+  systemd: name=ceph-mon.target enabled=yes masked=no
