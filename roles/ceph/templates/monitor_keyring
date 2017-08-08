@@ -7,3 +7,4 @@
 	caps mon = "allow *"
 	caps osd = "allow *"
 	caps mds = "allow *"
+	caps mgr = "allow *"
