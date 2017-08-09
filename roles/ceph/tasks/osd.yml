@@ -9,6 +9,7 @@
   register: ceph_disk_list
 
 - name: Deactivate disk /dev/{{item}}
+  ignore_errors: yes
   when: ceph_disk_list is defined and (ceph_disk_list.rc == 0) and ceph_force_prepare
   changed_when: false
   command: ceph-disk deactivate --mark-out /dev/{{item}}1
@@ -18,6 +19,9 @@
   ignore_errors: yes
   changed_when: false
   register: grep_proc_mounts
+
+- name: Parted disk /dev/{{item}}
+  command: parted -s /dev/{{item}} mklabel gpt
 
 - name: Prepare disk /dev/{{item}}
   when: ((ceph_disk_list is defined and ceph_disk_list.rc != 0) or ceph_force_prepare) and (grep_proc_mounts is defined and grep_proc_mounts.rc != 0)
