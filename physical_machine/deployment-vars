@@ -13,9 +13,9 @@ ceph_cinder_pass: "AQCBHc9X7x2NLBAA2nKjpTpUaH5eHv6+FqvZog=="
 ceph_osd_pool_default_size: "3"
 
 # explicitly define the public and private network interface
-ceph_public_iface: "eth0"
+ceph_public_iface: "enP4p1s0"
 ceph_private_iface: "enp1s0"
-ceph_public_netmask: "23"
+ceph_public_netmask: "24"
 ceph_private_netmask: "23"
 
 # osd device name on each storage node
