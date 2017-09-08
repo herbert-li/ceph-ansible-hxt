@@ -12,3 +12,30 @@
 # This fixes a bug for ceph-12.1.0 when the monitor service does not start automatically after a reboot.
 - name: Enable the ceph-mon.target service
   systemd: name=ceph-mon.target enabled=yes masked=no
+
+- name: Create mgr key
+  command: ceph --cluster ceph auth get-or-create mgr.{{inventory_hostname}} mon 'allow profile mgr' osd 'allow *' mds 'allow *' -o /etc/ceph/ceph.mgr.{{inventory_hostname}}.keyring
+  args:
+    creates: /etc/ceph/ceph.mgr.{{inventory_hostname}}.keyring
+
+- name: create ceph mgr directory
+  file:
+    path: /var/lib/ceph/mgr/
+    state: directory
+    mode: "0755"
+
+- name: create mgr directory
+  file:
+    path: /var/lib/ceph/mgr/ceph-{{inventory_hostname}}
+    state: directory
+    mode: "0755"
+
+- name: copy mgr key
+  file: src=/etc/ceph/ceph.mgr.{{inventory_hostname}}.keyring  state=link force=yes
+        dest=/var/lib/ceph/mgr/ceph-{{inventory_hostname}}/keyring
+
+- name: Ensure the mgr is enabled and running
+  service: name=ceph-mgr@{{inventory_hostname}} enabled=yes state=started
+
+- name: Enable the ceph-mgr.target service
+  systemd: name=ceph-mgr.target enabled=yes masked=no
