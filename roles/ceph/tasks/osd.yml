@@ -25,7 +25,7 @@
 
 - name: Prepare disk /dev/{{item}}
   when: ((ceph_disk_list is defined and ceph_disk_list.rc != 0) or ceph_force_prepare) and (grep_proc_mounts is defined and grep_proc_mounts.rc != 0)
-  command: ceph-disk prepare --zap-disk --cluster ceph --cluster-uuid {{ceph_fsid}} --bluestore /dev/{{item}}
+  command: ceph-disk prepare --zap-disk --cluster ceph --cluster-uuid {{ceph_fsid}} --bluestore /dev/{{item}} --block.wal /dev/sdf --block.db /dev/sdf
   register: ceph_disk
 
 - name: Activate disk /dev/{{item}}
