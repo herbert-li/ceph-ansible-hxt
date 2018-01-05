@@ -1,0 +1,5 @@
+[client.{{item.name}}]
+	key = {{item.pass}}
+{% for cap in item.caps %}
+	caps {{cap}}
+{% endfor %}

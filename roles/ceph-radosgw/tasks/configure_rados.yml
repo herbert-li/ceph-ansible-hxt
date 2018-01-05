@@ -1,0 +1,5 @@
+- name: Define users
+  include: user.yml user={{item}}
+  with_items:
+    - radosgw.gateway
+

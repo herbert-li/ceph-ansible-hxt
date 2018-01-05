@@ -1,0 +1,2 @@
+- include: configure_rados.yml
+  run_once: true

@@ -7,3 +7,6 @@ ceph-rep-03
 ceph-rep-01
 ceph-rep-02
 ceph-rep-03
+
+[ceph_radosgw_servers]
+ceph-rep-01

@@ -89,3 +89,7 @@ idempotent, use at your own risk. It is safe to use if you have cleanly deployed
 the machine and the disk to be used as OSD had a previously installed Ceph:
 
     --extra-vars 'ceph_force_prepare=true'
+
+3) deploy ceph-radosgw
+
+    ansible-playbook -K -v -i ./virtual_machine/hosts ./site-virtual-machine.yml --tags ceph-radosgw

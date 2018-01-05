@@ -1,0 +1,42 @@
+- name: Install ceph-radosgw
+  package: name=ceph-radosgw state=present
+
+- name: Copy radosgw keyring files
+  template: src=keyring dest=/etc/ceph/ceph.client.{{item.name}}.keyring
+  with_items:
+    - {name: "radosgw.gateway", pass: "{{ceph_radosgw_pass}}",
+       caps: [
+         'mon = "allow rwx"',
+         'osd = "allow rwx"'
+       ]
+      }
+
+- name: Determine if {{user}} user is defined
+  command: ceph auth get client.{{user}}
+  ignore_errors: yes
+  changed_when: false
+  register: ceph_configured
+
+- name: Get requested user definition
+  command: cat /etc/ceph/ceph.client.{{user}}.keyring
+  changed_when: false
+  register: ceph_user
+
+- name: Create or update {{user}} user
+  when: (ceph_user is defined and ceph_configured.stdout != ceph_user.stdout)
+  command: ceph auth import -i /etc/ceph/ceph.client.{{user}}.keyring
+
+- name: Start radosgw daemon
+  command: radosgw -c /etc/ceph/ceph.conf -n client.{{user}}
+
+- name: Create a radosgw user
+  command: radosgw-admin user create --uid=default --display-name="Default" --email=xxx@hxt-semitech.com -k /etc/ceph/ceph.client.{{user}}.keyring --name client.{{user}} 
+  register: radosgw_user
+
+- debug: msg="{{radosgw_user.stdout}}"
+
+- copy:
+      content: |
+               {{radosgw_user.stdout_lines[11]}}
+               {{radosgw_user.stdout_lines[12]}}
+      dest: /root/default_user.info

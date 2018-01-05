@@ -39,3 +39,13 @@
   roles:
     - {role: ceph, osd: True, mon: False, tags: [ceph-osd]}
 
+# rados gateway Deployment
+- name: Configure rados gateway
+  hosts: ceph_radosgw_servers
+  become: yes
+  vars_files:
+    - ["physical_machine/deployment-vars"]
+    - ["physical_machine/host_vars/{{inventory_hostname}}", "vars/empty"]
+  roles:
+    - {role: ceph-radosgw, tags: [ceph-radosgw]}
+

@@ -8,6 +8,7 @@ ceph_bootstrap_osd_pass: "AQC6h89XrotVBRAA2huhk0VW7c6VIWQyETl+gA=="
 ceph_glance_pass: "AQBrHc9XZNzwMBAAwhPr4Gbcn77E/6AezPMhqg=="
 ceph_nova_pass: "AQCLHc9XBR00ERAA3ZOXE/6Lugiub+IcX0VUmA=="
 ceph_cinder_pass: "AQCBHc9X7x2NLBAA2nKjpTpUaH5eHv6+FqvZog=="
+ceph_radosgw_pass: "AQBR5BRaZD7qIxAAt8vkdjQnOE4te4AskzpJ8Q=="
 
 # ceph config parameters
 ceph_osd_pool_default_size: "3"

@@ -4,3 +4,5 @@
 ceph_mons: "{% for host in groups['ceph_monitor_servers'] %}{{ hostvars[host]['ansible_fqdn'] }}{% if not loop.last %}, {% endif %}{% endfor %}"
 ceph_mon_initial_members: "{% for host in groups['ceph_monitor_servers'] %}{{ hostvars[host]['ansible_hostname'] }}{% if not loop.last %}, {% endif %}{% endfor %}"
 
+# radosgw server
+ceph_radosgw: "{% for host in groups['ceph_radosgw_servers'] %}{{ hostvars[host]['ansible_hostname'] }}{% if not loop.last %}, {% endif %}{% endfor %}"
